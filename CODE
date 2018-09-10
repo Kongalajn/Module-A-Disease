@@ -1,11 +1,20 @@
 # SIR model
 # Use these <- to make comments Python ignores
 
+#Rates
+InfRate=0.9 #Odds of someone infecting someone else
+RecRate=0.1 #Recovery rate constant
 
-#Variables
+#Population Constants
 PopSt=952058 #Stockholm
 PopGo=572779 #Gothenburg
 PopMa=341457 #Malmö
 PopCo=775033 #Copenhagen
 PopAa=273077 #Aarhus
 PopHa=1822445 #Hamburg
+PopTot=PopSt+PopGo+PopMa+PopCo+PopAa+PopHa
+
+#Starting populations
+Inf=1 #Infected population, we start with 1 patient 0
+Sus=1 #Susceptible population
+Rec=0.8*PopTot #Recovered and immune population, includes vaccinated.
