@@ -1,5 +1,6 @@
 # SIR model
 # Use these <- to make comments Python ignores
+# test if Silo can edit
 
 #Rates
 InfRate=0.9 #Odds of someone infecting someone else
