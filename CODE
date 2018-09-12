@@ -1,10 +1,15 @@
 # SIR model
 # Use these <- to make comments Python ignores
-# test if Silo can edit
+
+# import
+import scipy.integrate as spi
+import numpy as np
+import pylab as pl
 
 #Rates
-InfRate=0.9 #Odds of someone infecting someone else
-RecRate=0.1 #Recovery rate constant
+InfRate=0.9 #Odds of someone infecting someone else beta
+RecRate=0.1 #Recovery rate constant alpha
+VacRate=0.9 #gamma not sure
 
 #Population Constants
 PopSt=952058 #Stockholm
@@ -16,6 +21,54 @@ PopHa=1822445 #Hamburg
 PopTot=PopSt+PopGo+PopMa+PopCo+PopAa+PopHa
 
 #Starting populations
-Inf=1 #Infected population, we start with 1 patient 0
-Sus=1 #Susceptible population
-Rec=0.8*PopTot #Recovered and immune population, includes vaccinated.
+#Inf=1 #Infected population, we start with 1 patient 0
+#Sus=1 #Susceptible population
+#Rec=0.8*PopTot #Recovered and immune population, includes vaccinated.
+
+# for malmö
+# initial parameters
+Inf0=1
+Sus0=PopMa-Inf0
+Rec0=0
+
+Y0=[Inf0, Sus0, Rec0]
+
+T=np.linspace(0,100,100) #T axis
+
+def rhs(Y,t,InfRate,RecRate,VacRate) #define the right-hand side of the ODE
+
+  Sus=Y[0]
+  Inf=Y[1]
+  Rec=Y[2]
+
+  dS=-InfRate*Sus*Inf/PopMa-VacRate*Sus
+  dI=InfRate*Sus*Inf/PopMa-RecRate*Inf
+  dR=VacRate*Sus+RecRate*Inf
+
+  dY=[dS, dI, dR]
+
+  return dY
+
+#integration
+Result=spi.solve_ivp(rhs, T, Y0) #default method=RK45
+
+Sus=Result[:, 0]
+Inf=Result[:, 1]
+Rec=Result[:, 2]
+
+
+pylab.figure()
+pylab.plot( T, Sus/PopMa,
+            T, I/PopMa,
+            T, R/PopMa)
+         
+pylab.xlabel('Time')
+pylab.ylabel('Proportion')
+
+pylab.legend([ 'Susceptible', 'Infective', 'Recovered' ])
+
+pylab.show()
+
+
+
+
