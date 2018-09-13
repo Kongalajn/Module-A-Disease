@@ -1,0 +1,40 @@
+# My version, to discuss - can become primary if Silo approves
+#We need to decide time, how long a unit time is and what this means - if 10000 steps is 1 year, etc.?
+
+# import
+from math import *
+from scipy import *
+from numpy import *
+from pylab import *
+
+Steps=10000
+Stepsize=0.03*Steps
+i=0
+
+#Rates
+InfRate=0.9 #Infection odds on contact, beta
+RecRate=0.1 #Recovery rate, alpha
+VacRate=0.5 #Immunization rate, gamma
+
+#Population Constants
+PopSt=952058#Stockholm
+PopGo=572779 #Gothenburg
+PopMa=int(341457) #Malmö
+PopCo=775033 #Copenhagen
+PopAa=273077 #Aarhus
+PopHa=1822445 #Hamburg
+PopTot=PopSt+PopGo+PopMa+PopCo+PopAa+PopHa
+
+#Starting populations
+Inf=int(1) #Infected population, we start with 1 patient 0
+Sus=int(PopMa-Inf) #Susceptible population
+Rec=int(0.5*PopMa) #Recovered and immune population, includes vaccinated.
+
+for i in range(Steps):
+  Sus+=int(-InfRate*Sus*Inf/PopMa-VacRate*Sus)
+  Inf=int(+InfRate*Sus*Inf/PopMa-RecRate*Inf)
+  Rec+=int(VacRate*Sus+RecRate*Inf)
+#Need to limit, or Rec goes to larger than pop.
+print(Rec)
+figure()
+plot(i,Rec)
