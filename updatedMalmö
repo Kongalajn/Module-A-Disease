@@ -1,0 +1,50 @@
+import scipy.integrate as si
+import numpy as np
+import pylab as py
+
+alpha = 0.1
+beta = 4.5
+gamma = 0.3
+
+PopMa = 341457
+
+I0 = 1
+R0 = 0
+S0 = PopMa - I0 - R0
+
+Y0 = [I0, R0, S0]
+
+T = np.linspace(0, 100, num = 100)
+
+def rhs( Y, t, alpha, beta, gamma):
+    
+    S = Y[0]
+    I = Y[1]
+    R = Y[2]
+    
+    dS = -beta * S * I / PopMa - gamma * S
+    dI = beta * S * I / PopMa - alpha  * I
+    dR = gamma * S + alpha * I
+    
+    dY = [dS, dI, dR]
+    
+    return dY
+
+result = si.odeint(rhs, Y0, T, args=(beta, gamma, alpha))
+
+S = result[:, 0]
+I = result[:, 1]
+R = result[:, 2]
+
+py.figure()
+
+py.plot(T, S / PopMa,
+        T, I / PopMa,
+        T, R / PopMa)
+
+py.xlabel('time')
+py.ylabel('prop')
+
+py.legend(['S', 'I', 'R'])
+
+py.show()
