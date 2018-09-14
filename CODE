@@ -32,7 +32,7 @@ Y0=[Inf0, Sus0, Rec0]
 
 T=np.linspace(0,100,100) #T axis
 
-def rhs(Y,t,InfRate,RecRate,VacRate) #define the right-hand side of the ODE
+def rhs(Y, Prob, RecRate, VacRate): #define the right-hand side of the ODE
 
   Sus=Y[0]
   Inf=Y[1]
@@ -54,18 +54,14 @@ Inf=Result[:, 1]
 Rec=Result[:, 2]
 
 
-pylab.figure()
-pylab.plot( T, Sus/PopMa,
+pl.figure()
+pl.plot( T, Sus/PopMa,
             T, I/PopMa,
             T, R/PopMa)
          
-pylab.xlabel('Time')
-pylab.ylabel('Proportion')
+pl.xlabel('Time')
+pl.ylabel('Proportion')
 
-pylab.legend([ 'Susceptible', 'Infective', 'Recovered' ])
+pl.legend([ 'Susceptible', 'Infective', 'Recovered' ])
 
-pylab.show()
-
-
-
-
+pl.show()
