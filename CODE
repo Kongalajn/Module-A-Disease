@@ -9,7 +9,9 @@ import pylab as pl
 #Rates
 InfRate=0.9 #Odds of someone infecting someone else beta
 RecRate=0.1 #Recovery rate constant alpha
-VacRate=0.9 #gamma not sure
+VacRate=0.3 #gamma immunization rate
+Contacts=5 #Theta contacts per time unit
+Prob=Contacts*InfRate #Probability of transfer
 
 #Population Constants
 PopSt=952058 #Stockholm
@@ -21,15 +23,10 @@ PopHa=1822445 #Hamburg
 PopTot=PopSt+PopGo+PopMa+PopCo+PopAa+PopHa
 
 #Starting populations
-#Inf=1 #Infected population, we start with 1 patient 0
-#Sus=1 #Susceptible population
-#Rec=0.8*PopTot #Recovered and immune population, includes vaccinated.
-
 # for malmö
-# initial parameters
 Inf0=1
-Sus0=PopMa-Inf0
 Rec0=0
+Sus0=PopMa-Inf0-Rec0
 
 Y0=[Inf0, Sus0, Rec0]
 
@@ -41,8 +38,8 @@ def rhs(Y,t,InfRate,RecRate,VacRate) #define the right-hand side of the ODE
   Inf=Y[1]
   Rec=Y[2]
 
-  dS=-InfRate*Sus*Inf/PopMa-VacRate*Sus
-  dI=InfRate*Sus*Inf/PopMa-RecRate*Inf
+  dS=-Prob*Sus*Inf/PopMa-VacRate*Sus
+  dI=Prob*Sus*Inf/PopMa-RecRate*Inf
   dR=VacRate*Sus+RecRate*Inf
 
   dY=[dS, dI, dR]
