@@ -8,16 +8,16 @@ import matplotlib.pyplot as plt
 def f1(u1, t,beta=4.5/341457.0,alpha=0.1,gamma=0.3):  #ODE definition # malmö population:341457, 13800 moving between cities, 93% of them from Malmö to Copenhagen
     S1, I1, R1 = u1
     
-    return [-beta * S1 * I1 - gamma * S1 + 966 * S2 * (S2+I2+R2) - 12834 * S1 * (S1+I1+R1),
-            beta * S1 * I1- alpha * I1 + 966 * I2 * (S2+I2+R2) - 12834 * I1 * (S1+I1+R1),
-            gamma * S1 + alpha * I1 + 966 * R2 * (S2+I2+R2) - 12834 * R1 * (S1+I1+R1)]
+    return [-beta * S1 * I1 - gamma * S1 # + 966 * S2 * (S2+I2+R2) - 12834 * S1 * (S1+I1+R1),
+            beta * S1 * I1- alpha * I1 # + 966 * I2 * (S2+I2+R2) - 12834 * I1 * (S1+I1+R1),
+            gamma * S1 + alpha * I1] #+ 966 * R2 * (S2+I2+R2) - 12834 * R1 * (S1+I1+R1)]
 
 def f2(u2,t,beta=4.5/775033.0,alpha=0.1,gamma=0.3): # copenhagen population:341457
     
     S2, I2, R2 = u2
-    return [-beta * S2 * I2 - gamma * S2 - 966 * S2 * (S2+I2+R2) - 12834 * S1 * (S1+I1+R1),
-            beta * S2 * I2- alpha * I2 - 966 * I2 * (S2+I2+R2) - 12834 * I1 * (S1+I1+R1),
-            gamma * S2 + alpha * I2 - 966 * R2 * (S2+I2+R2) - 12834 * R1 * (S1+I1+R1)]
+    return [-beta * S2 * I2 - gamma * S2. # - 966 * S2 * (S2+I2+R2) - 12834 * S1 * (S1+I1+R1),
+            beta * S2 * I2- alpha * I2, # - 966 * I2 * (S2+I2+R2) - 12834 * I1 * (S1+I1+R1),
+            gamma * S2 + alpha * I2] # - 966 * R2 * (S2+I2+R2) - 12834 * R1 * (S1+I1+R1)]
              
 
 n = 60   # number of days
