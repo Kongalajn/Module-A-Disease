@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sun Sep 16 13:08:20 2018
-
-@author: hasee
-"""
-
 import numpy as np
 
 
@@ -12,24 +5,22 @@ class RungeKutta4(object):
     def __init__(self, f1, f2):
         if not callable(f1):
             raise TypeError('f1 is %s, not a function' % type(f1))
-        # For ODE systems, f will often return a list, but
-        # arithmetic operations with f in numerical methods
-        # require that f is an array. Let self.f be a function
-        # that first calls f(u,t) and then ensures that the
-        # result is an array of floats.
-        self.f1 = lambda u1, t: np.asarray(f1(u1, t), float)
+
+        self.f1 = lambda u1, t: np.asarray(f1(u1, t), float) #u1, u2 is the odes given by user
         
         self.f2 = lambda u2, t: np.asarray(f2(u2, t), float)
+        
+        #make the input f as an array
 
         
     def set_initial_condition(self, U0, c):
-        if c == 1:
-            U0 = np.asarray(U0)          # (assume U0 is sequence)
-            self.size = U0.size
+        if c == 1:                          #if one city is considered
+            U0 = np.asarray(U0)             #in our project U0 will contain 3 elements: number of susceptible, no. of infected & no. of recovered
+            self.size = U0.size             #3
             self.U0 = U0
         
         
-        if c == 2:
+        if c == 2:                         #if 2 cities are considered
             U1 = np.asarray(U0[0])
             U2 = np.asarray(U0[1])
             self.size = U1.size
@@ -39,34 +30,25 @@ class RungeKutta4(object):
           
         
             
-    def solve(self, time_points, d, terminate=None):
-        """
-        Compute solution u for t values in the list/array
-        time_points, as long as terminate(u,t,step_no) is False.
-        terminate(u,t,step_no) is a user-given function
-        returning True or False. By default, a terminate
-        function which always returns False is used.
-        """
+    def solve(self, steps, d, terminate=None): #d is the number of cities
+      
         
         if terminate is None:
-            terminate = lambda u, t, step_no: False
+            terminate = lambda u, t, steps: False #as long as it's false, we can do the calculations
                
-        self.t = np.asarray(time_points)
+        self.t = np.asarray(steps)    #time axis
                
         n = self.t.size
             
         if d == 1:
-            self.u1 = np.zeros((n,self.size))
+            self.u1 = np.zeros((n,self.size)) #first put zeros into the array of u1
     
-            # Assume that self.t[0] corresponds to self.U0
             self.u1[0] = self.U0 #initial numbers
     
             # Time loop
             for k in range(n-1):
                 self.k = k
-                self.u1[k+1] = self.advance1()
-                #if terminate(self.u, self.t, self.k+1):
-                   # break  # terminate loop over k
+                self.u1[k+1] = self.advance1() #put the results of RK4 method into the next u element
             return self.u1[:k+2], self.t[:k+2]  #[:k=2] means items from the beginning to the k+1's element
         
      
@@ -86,9 +68,6 @@ class RungeKutta4(object):
             
       
             
-            
-            
-    
 class RK4(RungeKutta4):
     def advance1(self):
         u1, f1, k, t = self.u1, self.f1, self.k, self.t
