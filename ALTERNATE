@@ -1,8 +1,8 @@
 # import
 import math as m
-import scipy sp
+import scipy as sp
 import numpy as np
-from pylab pl
+from pylab as pl
 
 T=0 #Start on day 0
 t=[]
