@@ -8,9 +8,9 @@ import RungeKutta4
 import numpy as np
 import matplotlib.pyplot as plt
 
-def f(u,t,beta=0.00001,v=0.1):
+def f(u,t,beta=0.000013,alpha=0.1,gamma=0.3):
     S, I, R = u
-    return [-beta*S*I, beta*S*I- v*I, v*I]
+    return [-beta*S*I - gamma*S, beta*S*I- alpha*I, gamma*S + alpha*I]
 
 n=60
 
@@ -21,12 +21,8 @@ def solve():
     time_points = np.linspace(0,60,n)
     u, t = solution.solve(time_points)
 
-    tol = 1e-10
     S = u[:,0]; I = u[:,1]; R = u[:,2]
-    for i in range(n):
-        if abs(S[i] + I[i] + R[i]) - 341457 > tol: #check if the total population is fixed
-            return # function will be terminated
-
+    
     plt.plot(t,S/340000.0,'b-', label='RK4: susceptibles')
     plt.plot(t,I/340000.0,'r-', label='RK4: infected')
     plt.plot(t,R/340000.0,'g-', label='RK4: recovered')
